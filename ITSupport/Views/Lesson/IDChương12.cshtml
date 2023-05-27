@@ -1,0 +1,59 @@
+﻿@model List<ITSupport.Models.Lesson>
+
+<h2>Bài Học Word Chương 2 </h2>
+
+<ul class="chapter-list">
+    @foreach (var lesson in Model)
+    {
+        <tr>
+
+            <h3>@lesson.Name</h3>
+
+            <td>
+                @Html.Raw(HttpUtility.HtmlDecode(lesson.Describe))
+            </td>
+            @*<td>
+                <img src="~/Asset/Image/@lesson.Images" asp-append-version="true" style="width: 300px;" />
+            </td>*@
+
+        </tr>
+    }
+
+</ul>
+
+
+
+
+<!-- Thêm CSS để thay đổi font chữ, màu sắc, cỡ chữ -->
+<style>
+    .chapter-list {
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        color: #333;
+    }
+
+        .chapter-list li {
+            margin-bottom: 10px;
+        }
+</style>
+
+<!-- Thêm JS để tạo hiệu ứng hover, click, và scroll -->
+<script>
+    $(document).ready(function () {
+        // Hiệu ứng hover
+        $('.chapter-list li').hover(function () {
+            $(this).css('background-color', '#eee');
+        }, function () {
+            $(this).css('background-color', 'transparent');
+        });
+
+        // Hiệu ứng click
+        $('.chapter-list li').click(function () {
+            alert('Bạn đã click vào chương ' + $(this).text());
+        });
+
+        // Hiệu ứng scroll
+        $('.chapter-list').scroll(function () {
+            console.log('Bạn đang cuộn danh sách chương');
+        });
+    });</script>

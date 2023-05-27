@@ -1,0 +1,195 @@
+﻿@model IEnumerable<ITSupport.Models.Question>
+@{
+    Layout = null;
+    if (Session["User"] == null)
+    {
+        Response.Redirect("~/Home/Login");
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/assets/vendors/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <script src="~/assets/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/js/angular.min.js"></script>
+    <script src="~/assets/js/angular-sanitize.js"></script>
+    <title></title>
+    <style>
+        .btn-outline-light.active {
+            color: black !important;
+        }
+    </style>
+</head>
+<body class="text-white" style="background: rgb(41,184,126); background: linear-gradient(90deg, rgba(41,184,126,1) 0%, rgba(60,94,182,1) 36%, rgba(66,100,175,1) 59%, rgba(0,165,199,1) 100%);">
+    <div class="container h-100 py-5" ng-app="testApp" ng-controller="testCtrl">
+        <div class="row">
+            <div class="mr-auto">
+                <h1> @ViewBag.Course </h1>
+                <h3> Câu hỏi : {{step + 1}} / {{ questions.length }}</h3>
+            </div>
+            <div class="ml-auto">
+                {{time}}
+            </div>
+        </div>
+        <div class="row" ng-if="!submitted">
+            <div class="col-12 col-sm-6 col-md-4">
+                <div class="d-flex h-100 align-items-center pt-5 pb-3">
+                    <div ng-bind-html="currentQuestion.Content"></div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-8" style="border-left: 1px solid white">
+                <span ng-if="!currentQuestion.Multiple">Chọn một đáp án chính xác nhất</span>
+                <span ng-if="currentQuestion.Multiple">Chọn các đáp án chính xác</span>
+                <ol type="A" style="list-style-position: inside;">
+                    <li ng-repeat="a in currentQuestion.Answer" class="my-5 w-100 {{checkAnswer(a.Id) ? 'active' : ''}}" style="position:relative;">
+                        <div class="btn btn-outline-light w-100 {{checkAnswer(a.Id) ? 'active' : ''}}"
+                             style="position: absolute; top: -5px; left: -15px; min-height: 38px;"
+                             ng-bind-html="a.Content"
+                             ng-click="toggleAnswer(a.Id)">
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row" ng-if="!submitted">
+            <div class="col">
+                <div style="width: 300px" class="mx-auto d-flex justify-content-between">
+                    <button class="btn btn-outline-light {{step == 0 ? 'disabled' : ''}}"
+                            ng-click="prev()">
+                        Prev
+                    </button>
+                    <button class="btn btn-danger" ng-click="submit()">Submit</button>
+                    <button class="btn btn-outline-light  {{step == questions.length - 1 ? 'disabled' : ''}}"
+                            ng-click="next()">
+                        Next
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-if="submitted">
+            <h2 class="col-12 text-center">
+                KẾT QUẢ
+            </h2>
+            <div class="col-12" style="font-size: 2rem;">
+                <table class="mx-auto my-5">
+                    <caption>
+                        <a class="btn btn-outline-warning" href="\"> Trở về trang chủ</a>
+                    </caption>
+                    <tr>
+                        <td>Điểm</td>
+                        <td class="text-center" style="width:3rem">:</td>
+                        <td>{{ mark }}</td>
+                    </tr>
+                    <tr>
+                        <td>Trả lời đúng</td>
+                        <td class="text-center" style="width:3rem">:</td>
+                        <td>{{ correct }}/{{ total }}</td>
+                    </tr>
+                    <tr>
+                        <td>Bắt đầu</td>
+                        <td class="text-center" style="width:3rem">:</td>
+                        <td>{{startTime | date : 'HH:mm:ss - dd/MM/yyyy'}}</td>
+                    </tr>
+                    <tr>
+                        <td>Kết thúc</td>
+                        <td class="text-center" style="width:3rem">:</td>
+                        <td>{{endTime | date : 'HH:mm:ss - dd/MM/yyyy'}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app = angular.module('testApp', ['ngSanitize']);
+        app.controller('testCtrl', function ($scope, $http, $interval) {
+            $scope.submitted = false;
+            $scope.session = @ViewBag.Session;
+            $scope.questions = @Html.Raw(Json.Encode(Model));
+            $scope.step = 0;
+                $scope.currentQuestion = $scope.questions[$scope.step];
+                console.log($scope.questions);
+            $scope.next = function () {
+                if ($scope.step < $scope.questions.length - 1) {
+                    $scope.step += 1;
+                }
+                $scope.currentQuestion = $scope.questions[$scope.step];
+            }
+            $scope.prev = function () {
+                if ($scope.step > 0) {
+                    $scope.step -= 1;
+                }
+                $scope.currentQuestion = $scope.questions[$scope.step];
+            }
+                $scope.answers = [];
+                $scope.checkAnswer = function (id) {
+                    const index = $scope.answers.findIndex(a => a.answerId == id);
+                    return index > -1;
+                }
+                $scope.toggleAnswer = function (id) {
+                    const index = $scope.answers.findIndex(a => a.answerId == id);
+                    if (index > -1) { $scope.answers.splice(index, 1); }
+                    else {
+                        if (!$scope.currentQuestion.Multiple) {
+                            $scope.answers = $scope.answers.filter(a => a.questionId != $scope.currentQuestion.Id);
+                        }
+                        $scope.answers.push({ answerId: id, questionId: $scope.currentQuestion.Id });
+                    }
+                }
+
+            $scope.startTime = new Date();
+                const time = @ViewBag.Time;
+                var x;
+            if (time && time > 0) {
+                var countDownDate = new Date().getTime() + time * 1000;
+                x = $interval(function () {
+                    var now = new Date().getTime();
+                    var distance = countDownDate - now;
+                    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    $scope.time = '';
+                    if (hours > 0) {
+                        $scope.time += hours.toString().padStart(2, '0') + ':';
+                    }
+                    $scope.time += minutes.toString().padStart(2, '0') + ':';
+                    $scope.time += seconds.toString().padStart(2, '0') + 's';
+                    if (distance < 0) {
+                        alert('Hết thời gian làm bài!');
+                        $scope.time = 'Hết giờ'
+                        $interval.cancel(x);
+                        sendAnswers();
+                    }
+                }, 1000);
+            }
+            window.onbeforeunload = function (e) {
+                return "Do you want to exit this page?";
+            };
+            function sendAnswers() {
+                $http.post(`/api/Courses/Verify/${location.pathname.split('/').pop()}?s=${$scope.session}`, $scope.answers)
+                    .then(res => {
+                        $scope.total = res.data.total;
+                        $scope.correct = res.data.correct;
+                        $scope.startTime = res.data.startTime;
+                        $scope.endTime = res.data.endTime;
+                        $scope.mark = (10 / (res.data.total / res.data.correct)).toFixed(2)
+                        $scope.submitted = true;
+                        window.onbeforeunload = undefined;
+                    })
+                    .catch(console.log);
+            }
+            $scope.submit = function () {
+                const confirmed = confirm("Bạn có chắc chắn muốn nộp bài?");
+                if (confirmed) {
+                    $interval.cancel(x);
+                    sendAnswers();
+                }
+            }
+
+        });
+    </script>
+</body>
+</html>

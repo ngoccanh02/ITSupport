@@ -1,0 +1,48 @@
+﻿@model ITSupport.Models.Topic
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style type="text/css">
+    img {
+        width: 200px;
+        margin-bottom: 20px;
+    }
+</style>
+<h2 style="text-align:center">
+    Chi Tiết Khóa Học
+</h2>
+<div style="text-align:center">
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Tên khóa học:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NameTopic)
+        </dd>
+        <dt>
+            Mô tả:
+        </dt>
+        <dd>
+            @Html.Raw(@Model.Describe.ToString().Replace("\n", "</p><p>&nbsp&nbsp&nbsp&nbsp&nbsp"))
+        </dd>
+        <dt>
+            Ảnh bìa:
+        </dt>
+        <dd>
+            <img src="~/Asset/Image/Topic/@Model.Images" alt=" @Model.NameTopic">
+        </dd>
+        <dt>
+            Ngày cập nhật:
+        </dt>
+        <dd>
+            @Html.FormatValue(@Model.CreateDate, "{0:dd/MM/yyyy}")
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Sửa", "Edit", new { id = Model.IDTopic }) |
+    @Html.ActionLink("VỀ TRANG QUẢN LÝ SÁCH", "Index")
+</p>

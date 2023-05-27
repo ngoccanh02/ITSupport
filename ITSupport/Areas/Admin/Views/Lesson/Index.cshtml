@@ -1,0 +1,114 @@
+﻿@using ITSupport.Models
+@using PagedList.Mvc
+@model PagedList.PagedList<ITSupport.Models.Lesson>
+
+@helper Truncate(string input, int length)
+{
+    if (input.Length <= length)
+    {
+        @Html.Raw(input)
+    }
+    else
+    {
+        var thisString = input.Substring(0, length);
+        @Html.Raw(thisString)
+    }
+}
+
+
+@{
+    ViewBag.Title = "Quản Lý Thông Tin Bài Học";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<h2 style="text-align: center">QUẢN LÝ THÔNG TIN BÀI HỌC</h2>
+
+<p>
+    @Html.ActionLink("Thêm mới", "Create")
+</p>
+<div class="d-flex">
+    <form ng-submit="loadData()" class="ml-auto">
+        <input class="form-control" placeholder="Từ khóa tìm kiếm..." type="search" ng-model="search" />
+    </form>
+</div>
+<table class="table">
+    <tr>
+        <th style="text-align:center;width:140px">
+            Tên bài học
+        </th>
+        @*<th style="text-align:center;width:200px">
+            Mô tả
+        </th>*@
+        <th style="text-align:center;width:200px">
+            Hình minh hoạ
+        </th>
+        <th style="text-align:center;width:100px">
+            Ngày Tạo
+        </th>
+        <th style="text-align:center;width:150px">
+            Người Tạo
+        </th>
+        <th style="text-align:center;width:100px">
+            Ngày Sửa đổi
+        </th>
+        <th style="text-align:center;width:150px">
+            Chương
+        </th>
+        <th style="text-align:center">
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @*Sử dụng helper để cắt TenSach lấy 50 ký tự*@
+                @Truncate(item.Name, 50)
+            </td>
+
+            <!--<td>-->
+                @*Sử dụng helper để cắt MoTa lấy 70 ký tự*@
+                <!--@Html.Raw(Truncate(item.Describe, 70).ToString())
+            </td>-->
+            <td>
+                <img src="~/Asset/Image/@item.Images" asp-append-version="true" style="width: 130px;" />
+            </td>
+            <td>
+                @*Định dạng hiển thị*@
+                @Html.FormatValue(@item.CreateDate, "{0:dd/MM/yyyy}")
+            </td>
+            <td>
+                @*Định dạng hiển thị*@
+                @*@Truncate(item.CreateBy, 50)*@
+                @Html.DisplayFor(modelItem => item.ACourse.Role)
+            </td>
+            <td>
+                @Html.FormatValue(@item.ModifiedDate, "{0:dd/MM/yyyy}")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course1.Name)
+            </td>
+
+            <td>
+                <a href="@Url.Action("Edit", new { id = item.IDLesson })" class="btn btn-warning" role="button">Sửa</a>
+                <a href="@Url.Action("Details", new { id = item.IDLesson })" class="btn btn-primary" role="button">Chi tiết</a>
+                <a href="@Url.Action("Delete", new { id = item.IDLesson })" class="btn btn-danger" role="button">Xóa</a>
+            </td>
+        </tr>
+    }
+</table>
+
+@*Tạo iên kết phần trang*@
+                Trang @(Model.PageCount < Model.PageNumber ? 0 :
+        Model.PageNumber)/@Model.PageCount
+        <div class="MenuTrang">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))
+        </div>
+        <style>
+            .MenuTrang {
+                display: inline;
+                text-align: center;
+            }
+        </style>

@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITSupport</title>
+    <link rel="stylesheet" href="/Asset/CSS/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+
+    <!-- Bootstrap hiepsiit-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+@{
+    if (Session["User"] == null)
+    {
+        Response.Redirect("~/Home/Login");
+    }
+}
+<body>
+    <div class="container">
+        <div class="left">
+            <div class="navbar">
+                <ul class="menu">
+                    <li class="active animationTop">
+                        <a style="text-decoration: none" href="@Url.Action("Index", "Home")">
+                            <i class="fa-solid fa-house-user"></i>
+                        </a>
+                        Home
+                    </li>
+                    <li class="active animationTop">
+                        <a style="text-decoration: none" href="@Url.Action("Index", "Course")">
+                            <i class="fa-solid fa-book-open-reader"></i>
+                        </a>
+                        Course
+                        <!-- menu con sổ xuống cấp 1-->
+                        @* <ul>
+            <li>
+                <a style="text-decoration: none" href="#">Tin Học Cơ Bản</a>
+            </li>
+            <li>
+                <a style="text-decoration: none" href="#">Tin Học Nâng Cao</a>
+            </li>
+            <li>
+                <a style="text-decoration: none" href="#">Tin Học Văn Phòng</a>
+            </li>
+        </ul>*@
+                    </li>
+                    <li class="active animationTop">
+                        <a style="text-decoration: none" href="/Home/Exercise">
+                            <i class="fa-solid fa-book-bookmark"></i>
+                            Exercise
+                        </a>
+                    </li>
+                    <li class="active animationTop">
+                        <a style="text-decoration: none" href="#">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </a>
+                        Tips
+                    </li>
+                    <li class="active animationTop">
+                        <a style="text-decoration: none" href="#">
+                            <i class="fa-solid fa-cloud"></i>
+                        </a>
+                        Document
+                    </li>
+                    <li class="active animationTop">
+                        <a style="text-decoration: none" href="@Url.Action("Logout", "Home")">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </a>
+                        LogOut
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="center">
+            <div class="bigTitle animationTop delay-04">ITSupport</div>
+            <div class="banner">
+                <img src="~/Asset/Image/excel.png" class="animationTop delay-05 row-cols-sm-4">
+                <div class="content">
+                    <div class="title animationTop delay-06">
+                        Excel Cơ Bản
+                    </div>
+                    <div class="des animationTop delay-07">
+                        200k
+                    </div>
+                    <button class="add animationTop delay-08">Buy</button>
+                </div>
+            </div>
+
+            <!-- category -->
+            <div class="bigTitle animationTop delay-09">Category</div>
+            <ul class="category">
+                <li class="animationTop delay-1">
+                    <i class="fa-solid fa-user"></i>
+                    User
+                </li>
+                <li class="animationTop delay-11">
+                    <a style="text-decoration: none" href="https://www.facebook.com/ngoc.canh.200">
+                        <i class="fa-brands fa-facebook"></i>
+                    </a>
+                    Facebook
+                </li>
+                <li class="animationTop delay-12">
+                    <i class="fa-solid fa-phone"></i>
+                    Phone
+                </li>
+                <li class="animationTop delay-13">
+                    <i class="fa-brands fa-tiktok"></i>
+                    Tiktok
+                </li>
+                <li class="animationTop delay-14">
+                    <i class="fa-brands fa-youtube"></i>
+                    Youtube
+                </li>
+            </ul>
+            <section class="animationTop delay-15">
+                @RenderBody()
+            </section>
+            <!-- figure -->
+
+            <div class="bigTitle animationTop delay-15">Team Member</div>
+            <div class="listFigure">
+                <div class="item animationTop delay-16">
+                    <div class="img">
+                        <img src="~/Asset/Image/mi1.jpg" alt="">
+                    </div>
+                    <div class="content">
+                        <h3>Thùy Trang</h3>
+                        
+                    </div>
+                </div>
+                <div class="item animationTop delay-17">
+                    <div class="img">
+                        <img src="~/Asset/Image/mi2.jpg" alt="">
+                    </div>
+                    <div class="content">
+                        <h3>Ngọc Cảnh</h3>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="director animationTop delay-18">
+                <img src="/Asset/Image/user0.PNG" alt="">
+                <div class="title">director User</div>
+                <ul>
+                    <li>
+                        <div class="count">30</div>
+                        film
+                    </li>
+                    <li>
+                        <div class="count">10</div>
+                        Oscar
+                    </li>
+                </ul>
+            </div>
+            <!-- actor -->
+            <div class="actor">
+                <div class="bigTitle animationTop delay-19">Actor</div>
+                <ul>
+                    <li class="animationTop delay-2">
+                        <img src="/Asset/Image/user1.PNG">
+                        <div class="content">
+                            <div class="nameActor">Actor 1</div>
+                            <div class="nameUser">User 1</div>
+                        </div>
+                    </li>
+
+                    <li class="animationTop delay-21">
+                        <img src="/Asset/Image/user2.PNG">
+                        <div class="content">
+                            <div class="nameActor">Actor 1</div>
+                            <div class="nameUser">User 1</div>
+                        </div>
+                    </li>
+
+                    <li class="animationTop delay-22">
+                        <img src="/Asset/Image/user3.PNG">
+                        <div class="content">
+                            <div class="nameActor">Actor 1</div>
+                            <div class="nameUser">User 1</div>
+                        </div>
+                    </li>
+
+                    <li class="animationTop delay-23">
+                        <img src="/Asset/Image/user4.PNG">
+                        <div class="content">
+                            <div class="nameActor">Actor 1</div>
+                            <div class="nameUser">User 1</div>
+                        </div>
+                    </li>
+
+                    <li class="animationTop delay-24">
+                        <img src="/Asset/Image/user5.PNG">
+                        <div class="content">
+                            <div class="nameActor">Actor 1</div>
+                            <div class="nameUser">User 1</div>
+                        </div>
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,309 @@
+﻿@model ITSupport.Models.Course
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<section ng-app="coursesApp" ng-controller="coursesCtrl">
+    <h2>Ngân hàng câu hỏi</h2>
+
+    <div class="d-flex">
+        <form ng-submit="loadData()" class="ml-auto">
+            <input class="form-control" placeholder="Từ khóa tìm kiếm..." type="search" ng-model="search" />
+        </form>
+    </div>
+    <table class="table">
+        <caption>
+            <span ng-repeat="p in pages" ng-click="setPage(p)" class="btn mx-1 {{p == pageIndex ? 'btn-primary' : 'btn-default'}}">{{p}}</span>
+        </caption>
+        <tr>
+            <th style="cursor:pointer;" ng-click="sortBy('Images')">
+                Ảnh
+            </th>
+            <th style="cursor:pointer;" ng-click="sortBy('Name')">
+                Tên khóa học <i class="fa fa-sort" aria-hidden="true"></i>
+            </th>
+            <th>
+                Số câu hỏi
+            </th>
+            <th style="cursor:pointer;" ng-click="sortBy('Describe')">
+                Mô tả
+            </th>
+            <th style="cursor:pointer;" ng-click="sortBy('CreateDate')">
+                Ngày tạo <i class="fa fa-sort" aria-hidden="true"></i>
+            </th>
+            <th></th>
+        </tr>
+
+
+        <tr ng-repeat="item in items">
+            <td>
+                <img src="~/Asset/Image/{{item.images}}" asp-append-version="true" style="width: 50px;" />
+            </td>
+            <td>
+                {{item.name}}
+            </td>
+            <td>
+                {{ item.courseQuestion.length }}
+            </td>
+            <td>
+                <div class="question__content" ng-bind-html="item.describe" style="max-width:300px;display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;"></div>
+            </td>
+            <td>
+                {{item.createDate | date : 'dd/MM/yyyy'}}
+            </td>
+            <td>
+                <button class="btn btn-info" data-toggle="modal" data-target="#upsert" ng-click="update(item)">
+                    <i class="fa fa-info" aria-hidden="true"></i>
+                </button>
+            </td>
+        </tr>
+    </table>
+
+    <div class="modal fade" id="upsert" tabindex="-1" role="dialog" aria-labelledby="upsertLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="upsertLabel">Thiết lập câu hỏi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="max-height:80vh; overflow-y:auto">
+                    <div class="form-group">
+                        <label class="control-label">Thời gian (Để trống hoặc 0 sẽ không giới hạn TG)</label>
+                        <div style="position:relative">
+                            <input type="number" class="form-control" ng-model="item.testTime" />
+                            <span style="position:absolute; top: 5px; right: 50px; user-select:none">giây</span>
+                        </div>
+                    </div>
+                    <h3>Ngân hàng câu hỏi</h3>
+                    <div class="d-flex align-items-center">
+                        <div>Đã chọn : {{selectedQuestions.length}} câu hỏi</div>
+                        <form ng-submit="questions.loadData()" class="ml-auto">
+                            <input class="form-control" placeholder="Từ khóa tìm kiếm..." type="search" ng-model="questions.search" />
+                        </form>
+                    </div>
+                    <table class="table">
+                        <caption>
+                            <span ng-repeat="p in questions.pages" ng-click="questions.setPage(p)" class="btn mx-1 {{p == questions.pageIndex ? 'btn-primary' : 'btn-default'}}">{{p}}</span>
+                        </caption>
+                        <tr>
+                            <th style="cursor:pointer;" ng-click="questions.sortBy('Name')">
+                                Tên câu hỏi <i class="fa fa-sort" aria-hidden="true"></i>
+                            </th>
+                            <th style="cursor:pointer;" ng-click="questions.sortBy('Multiple')">
+                                Nhiều câu TL <i class="fa fa-sort" aria-hidden="true"></i>
+
+                            </th>
+                            <th class="question__content" style="cursor:pointer;" ng-click="questions.sortBy('Content')">
+                                Nội dung <i class="fa fa-sort" aria-hidden="true"></i>
+                            </th>
+                            <th style="cursor:pointer;" ng-click="questions.sortBy('CreateDate')">
+                                Ngày tạo <i class="fa fa-sort" aria-hidden="true"></i>
+                            </th>
+                            <th></th>
+                        </tr>
+
+
+                        <tr ng-repeat="item in questions.items">
+                            <td>
+                                {{item.name}}
+                            </td>
+                            <td>
+                                {{ item.multiple ? 'Có' : 'Không' }}
+                            </td>
+                            <td>
+                                <div class="question__content" ng-bind-html="item.content"></div>
+                            </td>
+                            <td>
+                                {{item.createDate | date : 'dd/MM/yyyy'}}
+                            </td>
+                            <td>
+                                <input type="checkbox"
+                                       ng-checked="check(item.id)"
+                                       ng-click="toggleSelection(item)" />
+                            </td>
+                        </tr>
+                    </table>
+                    <h3>Câu hỏi đã chọn</h3>
+                    <table class="table" style="max-height:35vh; overflow-y:auto;">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Tên câu hỏi
+                                </th>
+                                <th>
+                                    Nhiều câu TL
+
+                                </th>
+                                <th>
+                                    Nội dung
+                                </th>
+                                <th>
+                                    Ngày tạo
+                                </th>
+                                <th>Thứ tự</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="item in selectedQuestions">
+                                <td>
+                                    {{item.name}}
+                                </td>
+                                <td>
+                                    {{ item.multiple ? 'Có' : 'Không' }}
+                                </td>
+                                <td>
+                                    <div class="question__content" ng-bind-html="item.content"></div>
+                                </td>
+                                <td>
+                                    {{item.createDate | date : 'dd/MM/yyyy'}}
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <button class="btn btn-sm" ng-click="toggleSelection(item)">X</button>
+                                        <input type="number" class="form-control" style="width:60px" ng-model="item.order" ng-change="sortSelected()" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button ng-click="save()" type="button" class="btn btn-primary">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts {
+    <script>
+        var app = angular.module('coursesApp', ['ngSanitize', 'ui.tinymce']);
+
+        app.controller('coursesCtrl', function ($scope, $http) {
+            $scope.pageIndex = 1;
+            $scope.pageSize = 10;
+            $scope.search = '';
+            $scope.sort = null;
+            $scope.item = {};
+            $scope.items = [];
+            $scope.pages = [];
+            const loadData = () => {
+                $('#upsert').modal('hide');
+                $('#delete').modal('hide');
+                let sort = '';
+                if ($scope.sort) sort = `${$scope.sort}%20${$scope.sortOrder > 0 ? 'asc' : 'desc'}`
+                $http.get(`/api/Courses/Page?pageIndex=${$scope.pageIndex}&pageSize=${$scope.pageSize}&search=${$scope.search}&sort=${sort}`)
+                    .then(res => {
+                        $scope.items = res.data.items;
+                        $scope.total = res.data.total;
+                        $scope.pages = [];
+                        let total = $scope.total;
+                        if (total < $scope.pageIndex * $scope.pageSize && $scope.pageIndex > 1) {
+                            $scope.pages.push($scope.pageIndex - 1)
+                        }
+                        $scope.pages.push($scope.pageIndex);
+                        if (total > $scope.pageIndex * $scope.pageSize) {
+                            $scope.pages.push($scope.pageIndex + 1)
+                        }
+                        if (total > ($scope.pageIndex + 1) * $scope.pageSize && $scope.pages.length == 2) {
+                            $scope.pages.push($scope.pageIndex + 2)
+                        }
+                    });
+            }
+            loadData();
+            $scope.setPage = (pageIndex) => {
+                $scope.pageIndex = pageIndex;
+                loadData();
+            }
+            $scope.loadData = loadData;
+            $scope.sortBy = (field) => {
+                if ($scope.sort == field) $scope.sortOrder *= -1;
+                else {
+                    $scope.sort = field;
+                    $scope.sortOrder = -1;
+                }
+                loadData();
+            }
+
+            $scope.update = function (item) {
+                $scope.item = { ...item };
+                $scope.selectedQuestions = item.courseQuestion?.map(c => {
+                    const question = c.question;
+                    question.order = c.order;
+                    return question;
+                }) ?? [];
+
+            }
+            $scope.save = function () {
+                if ($scope.item.idCourse) {
+                    const courseQuestion = $scope.selectedQuestions.map(q => { return { questionId: q.id, order: q.order } });
+                    $http.patch(`/api/Courses/${$scope.item.idCourse}?time=${$scope.item.testTime}`, courseQuestion)
+                        .then(loadData);
+                }
+
+            }
+            $scope.sortSelected = () => {
+                $scope.selectedQuestions.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+            }
+            $scope.selectedQuestions = [];
+            $scope.toggleSelection = (item) => {
+                const index = $scope.selectedQuestions.findIndex(q => q.id == item.id)
+                if (index >= 0) {
+                    $scope.selectedQuestions.splice(index, 1);
+                }
+                else {
+                    $scope.selectedQuestions.push({ ...item });
+                }
+                $scope.sortSelected();
+            }
+            $scope.check = (id) => {
+                return $scope.selectedQuestions.findIndex(q => q.id == id) >= 0;
+            }
+            $scope.questions = {};
+            $scope.questions.pageIndex = 1;
+            $scope.questions.pageSize = 10;
+            $scope.questions.search = '';
+            $scope.questions.sort = null;
+            $scope.questions.items = [];
+            $scope.questions.pages = [];
+            $scope.questions.loadData = () => {
+                let sort = '';
+                if ($scope.questions.sort) sort = `${$scope.questions.sort}%20${$scope.questions.sortOrder > 0 ? 'asc' : 'desc'}`
+                $http.get(`/api/Questions/Page?pageIndex=${$scope.questions.pageIndex}&pageSize=${$scope.questions.pageSize}&search=${$scope.questions.search}&sort=${sort}`)
+                    .then(res => {
+                        $scope.questions.items = res.data.items;
+                        $scope.questions.total = res.data.total;
+                        $scope.questions.pages = [];
+                        let total = $scope.questions.total;
+                        if (total < $scope.questions.pageIndex * $scope.questions.pageSize && $scope.questions.pageIndex > 1) {
+                            $scope.questions.pages.push($scope.questions.pageIndex - 1)
+                        }
+                        $scope.questions.pages.push($scope.questions.pageIndex);
+                        if (total > $scope.questions.pageIndex * $scope.questions.pageSize) {
+                            $scope.questions.pages.push($scope.questions.pageIndex + 1)
+                        }
+                        if (total > ($scope.questions.pageIndex + 1) * $scope.questions.pageSize && $scope.questions.pages.length == 2) {
+                            $scope.questions.pages.push($scope.questions.pageIndex + 2)
+                        }
+                    });
+            }
+            $scope.questions.loadData();
+            $scope.questions.setPage = (pageIndex) => {
+                $scope.questions.pageIndex = pageIndex;
+                $scope.questions.loadData();
+            }
+            $scope.questions.sortBy = (field) => {
+                if ($scope.questions.sort == field) $scope.questions.sortOrder *= -1;
+                else {
+                    $scope.questions.sort = field;
+                    $scope.questions.sortOrder = -1;
+                }
+                $scope.questions.loadData();
+            }
+        });
+    </script>
+}

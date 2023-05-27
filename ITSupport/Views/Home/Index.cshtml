@@ -1,0 +1,86 @@
+﻿@model IEnumerable<ITSupport.Models.Course>
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@helper Truncate(string input, int length)
+{
+    if (input.Length <= length)
+    {
+        @Html.Raw(input)
+    }
+    else
+    {
+        var thisString = input.Substring(0, length);
+        @Html.Raw(thisString)
+    }
+}
+
+
+
+<h2 style="text-align: center" class="bigTitle animationTop delay-15">CÁC KHÓA HỌC NỔI BẬT</h2>
+<table class="table">
+    <tr>
+        <th style="text-align:center;width:140px">
+            Tên Khóa Học
+        </th>
+        <th style="text-align:center;width:200px">
+            Mô tả
+        </th>
+        <th style="text-align:center;width:100px">
+            Hình minh hoạ
+        </th>
+        <th style="text-align:center;width:80px">
+            Truy Cập
+        </th>
+        <th style="text-align:center">
+        </th>
+    </tr>
+
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @*Sử dụng helper để cắt TenSach lấy 50 ký tự*@
+                    @Truncate(item.Name, 50)
+                </td>
+
+                <td>
+                    @*Sử dụng helper để cắt MoTa lấy 70 ký tự*@
+                    @Html.Raw(Truncate(item.Describe, 20).ToString())
+                </td>
+                <td>
+                    <img src="~/Asset/Image/@item.Images" asp-append-version="true" style="width: 50px;" />
+                </td>
+                <td>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Đăng Ký" class="btn btn-success" />
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+@*Tạo iên kết phần trang
+            Trang @(Model.PageCount < Model.PageNumber ? 0 :
+    Model.PageNumber)/@Model.PageCount
+    <div class="MenuTrang">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))
+    </div>
+    <style>
+        .MenuTrang {
+            display: inline;
+            text-align: center;
+        }
+    </style>
+*@

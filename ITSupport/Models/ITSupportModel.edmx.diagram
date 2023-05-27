@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="295718c5f0ae4fb68cb09b8c11652ff5" Name="Diagram1">
+        <EntityTypeShape EntityType="ITSupportModel.ACourse" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITSupportModel.Admin" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITSupportModel.Answer" Width="1.5" PointX="10.5" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITSupportModel.Course" Width="1.5" PointX="5.25" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITSupportModel.CourseQuestion" Width="1.5" PointX="7.5" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITSupportModel.Lesson" Width="1.5" PointX="7.5" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITSupportModel.OrderDetails" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITSupportModel.PublishingHouse" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITSupportModel.Question" Width="1.5" PointX="5.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITSupportModel.Quiz" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITSupportModel.SessionAnswer" Width="1.5" PointX="12.75" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITSupportModel.sysdiagrams" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITSupportModel.TestSession" Width="1.5" PointX="10.5" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITSupportModel.Topic" Width="1.5" PointX="3" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITSupportModel.User" Width="1.5" PointX="8.25" PointY="14" IsExpanded="true" />
+        <AssociationConnector Association="ITSupportModel.FK_Course_ACourse" ManuallyRouted="false" />
+        <AssociationConnector Association="ITSupportModel.FK_Lesson_ACourse" ManuallyRouted="false" />
+        <AssociationConnector Association="ITSupportModel.FK_Topic_ACourse" ManuallyRouted="false" />
+        <AssociationConnector Association="ITSupportModel.FK__SessionAn__Answe__47DBAE45" ManuallyRouted="false" />
+        <AssociationConnector Association="ITSupportModel.FK_Answers_Questions" ManuallyRouted="false" />
+        <AssociationConnector Association="ITSupportModel.FK_Course_Lesson" ManuallyRouted="false" />
+        <AssociationConnector Association="ITSupportModel.FK_Course_PublishingHouse" ManuallyRouted="false" />
+        <AssociationConnector Association="ITSupportModel.FK_Course_Topic1" ManuallyRouted="false" />
+        <AssociationConnector Association="ITSupportModel.FK_CourseQuestions_Course" ManuallyRouted="false" />
+        <AssociationConnector Association="ITSupportModel.FK_Lesson_Course" ManuallyRouted="false" />
+        <AssociationConnector Association="ITSupportModel.FK_TestSession_Cource" ManuallyRouted="false" />
+        <AssociationConnector Association="ITSupportModel.FK_CourseQuestions_Questions" ManuallyRouted="false" />
+        <AssociationConnector Association="ITSupportModel.FK__SessionAn__Quest__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="ITSupportModel.FK_SessionAnswer_Session" ManuallyRouted="false" />
+        <AssociationConnector Association="ITSupportModel.FK_TestSession_User" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

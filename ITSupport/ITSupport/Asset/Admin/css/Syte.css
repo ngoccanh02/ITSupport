@@ -1,0 +1,43 @@
+body{
+	background-color: #eee;
+	height: 100vh;
+}
+.item{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+}
+input{
+		border: none;
+	outline: none;
+	padding: 10px;
+	font-size: 10px;
+}
+label{
+	display: block;
+	position: relative;
+	width: 150px;
+	height: 0px;
+	margin-top: 5px
+}
+label::before{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 140%;
+	height: 140%;
+	font-size: 13px;
+	font-family: system-ui;
+}
+input:placeholder-shown ~ label::before{
+	content:attr(data-empty);
+}
+input:invalid ~ label::before{
+	content: attr(data-invalid);
+	color: red;
+}
+input:not(:placeholder-shown):valid ~ label::before{
+	content: attr(data-valid);
+	color: green;
+}

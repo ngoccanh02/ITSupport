@@ -1,0 +1,65 @@
+﻿@model ITSupport.Models.User
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/Asset/Login/style.css" rel="stylesheet" />
+    <title>IT Support - Reset Password!</title>
+</head>
+<body>
+    <form action="Reset" method="post">
+        <div class="login">
+            <div class="title">Hey, You!</div>
+            <div class="des">
+                Please enter your new password!
+            </div>
+            <div class="group">
+                <input type="password" id="inputPassword" placeholder="A New Password" name="newpass">
+                <span id="showPassword">
+                    <ion-icon name="eye-outline"></ion-icon>
+                    <ion-icon name="eye-off-outline"></ion-icon>
+                </span>
+            </div>
+            <div class="group">
+                <input type="password" id="inputPassword" placeholder="Confirm New Password" name="enterpass">
+                <span id="showPassword">
+                    <ion-icon name="eye-outline"></ion-icon>
+                    <ion-icon name="eye-off-outline"></ion-icon>
+                </span>
+            </div>
+            <input type="hidden" value="@Model.ID" name="iduser" />
+            @ViewBag.ThongBao
+            <div class="signIn">
+                <button>Send Now</button>
+            </div>
+            <div class="or">
+                Or continue with
+            </div>
+            <div class="list">
+                <div class="item">
+                    <img src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png" alt="">
+                </div>
+                <div class="item">
+                    <img src="https://museumandgallery.org/wp-content/uploads/2020/03/Facebook-Icon-Facebook-Logo-Social-Media-Fb-Logo-Facebook-Logo-PNG-and-Vector-with-Transparent-Background-for-Free-Download.png" alt="">
+                </div>
+                <div class="item">
+                    <img src="https://www.iconpacks.net/icons/2/free-twitter-logo-icon-2429-thumb.png" alt="">
+                </div>
+            </div>
+            <div class="register">
+                You are already a member? <a href="@Url.Action("Login","Home")">Login now</a>
+            </div>
+
+        </div>
+    </form>
+    <script src="~/Asset/Login/app.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

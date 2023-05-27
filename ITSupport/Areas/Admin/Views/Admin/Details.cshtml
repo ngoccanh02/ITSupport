@@ -1,0 +1,54 @@
+﻿@model ITSupport.Models.Admin
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style type="text/css">
+    img {
+        width: 200px;
+        margin-bottom: 20px;
+    }
+</style>
+<h2 style="text-align:center">
+    Chi Tiết Khóa Học
+</h2>
+<div style="text-align:center">
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Họ và tên:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            Email:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            Password:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+        <dt>
+            Ảnh đại diện:
+        </dt>
+        <dd>
+            <img src="~/Asset/Image/Admin/@Model.Images" alt=" @Model.Name">
+        </dd>
+        <dt>
+            Ngày cập nhật:
+        </dt>
+        <dd>
+            @Html.FormatValue(@Model.CreateDate, "{0:dd/MM/yyyy}")
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Sửa", "Edit", new { id = Model.IDAdmin }) |
+    @Html.ActionLink("VỀ TRANG QUẢN LÝ ADMIN", "Index")
+</p>

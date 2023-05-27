@@ -1,0 +1,53 @@
+﻿@model ITSupport.Models.Lesson
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<style type="text/css">
+    img {
+        width: 200px;
+        margin-bottom: 20px;
+    }
+</style>
+<h2 style="text-align:center">
+    Chi Tiết Bài Học
+</h2>
+<div style="text-align:center">
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Tên bài học:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            Mô tả:
+        </dt>
+        <dd>
+            @Html.Raw(@Model.Describe.ToString().Replace("\n", "</p><p>&nbsp&nbsp&nbsp&nbsp&nbsp"))
+        </dd>
+        <dt>
+            Ảnh bìa:
+        </dt>
+        <dd>
+            <img src="~/Asset/Image/@Model.Images" alt=" @Model.Name">
+        </dd>
+        <dt>
+            Ngày cập nhật:
+        </dt>
+        <dd>
+            @Html.FormatValue(@Model.CreateDate, "{0:dd/MM/yyyy}")
+        </dd>
+        <dt>
+            Chương:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Course1.Name)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Sửa", "Edit", new { id = Model.IDLesson }) |
+    @Html.ActionLink("VỀ TRANG QUẢN LÝ SÁCH", "Index")
+</p>

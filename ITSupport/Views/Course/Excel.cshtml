@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ITSupport.Models.Course>
+@using PagedList.Mvc
+@using PagedList
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Danh Sách Các Chương Excel</h1>
+<div class="row row-eq-height">
+    @foreach (var item in Model)
+    {
+        <div class="d-block col-12 col-sm-6 col-md-4 d-flex flex-column justify-content-between">
+            <a href="@string.Format("/Lesson/IDChương{0}", item.IDCourse)" class="h-100">
+                <img class="w-100 h-100" style="object-fit: cover;" src="~/Asset/Image/@item.Images" asp-append-version="true" />
+            </a>
+            <div>
+                <h3><a class="text-dark" href="@string.Format("/Lesson/IDChương{0}", item.IDCourse)"> @item.Name</a> </h3>
+                <p style="text-decoration:none; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">@Html.Raw(item.Describe)</p>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Thêm JS để tạo hiệu ứng hover, click, và scroll -->
+<script>
+    $(document).ready(function () {
+        // Hiệu ứng hover
+        $('.chapter-list li').hover(function () {
+            $(this).css('background-color', '#eee');
+        }, function () {
+            $(this).css('background-color', 'transparent');
+        });
+
+        // Hiệu ứng click
+        $('.chapter-list li').click(function () {
+            alert('Bạn đã click vào chương ' + $(this).text());
+        });
+
+        // Hiệu ứng scroll
+        $('.chapter-list').scroll(function () {
+            console.log('Bạn đang cuộn danh sách chương');
+        });
+    });</script>
