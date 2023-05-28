@@ -165,18 +165,11 @@ namespace ITSupport.Controllers
         {
             int mus = Convert.ToInt32(f["iduser"]);
             User ac = data.User.First(n => n.ID == mus);
-            if (f["newpass"] != f["enterpass"])
-            {
-                ViewBag.ThongBao = "Mật khẩu không trùng khớp";
-                return View();
-            }
-            else
-            {
                 ac.Password = f["newpass"];
                 data.SaveChanges();
                 Session["reset"] = null;
                 return RedirectToAction("Login", "Home");
-            }
+           
         }
 
         [HttpGet]
